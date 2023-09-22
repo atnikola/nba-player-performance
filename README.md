@@ -4,9 +4,9 @@
 _September 2023_
 
 - [Introduction](#introduction)
-- [Import & Clean Data](import)
-- [General Analysis & Correlations](analysis)
-- [OLS Regression & Approximate Value (AV)](ols_av)
+- [Import & Clean Data](#import)
+- [General Analysis & Correlations](#analysis)
+- [OLS Regression & Approximate Value (AV)](#ols_av)
 
 ## [Introduction](#introduction)
 In this project I utilize python to analyze data of NBA players in the league and compare their performance against their monetary value (salary) i.e. Which players are undervalued / overvalued. We take a look at some interesting statistics, correlations and then utilize scikit-learn to see if we can accurately predict players next year salaries based on their previous year's performance. (Note: Most contracts and salaries are negotiated with 2-5 years attached so we are looking to see if that future value holds)
