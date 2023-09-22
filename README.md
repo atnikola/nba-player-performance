@@ -255,7 +255,8 @@ There are also a small number of players with high career points per game, but l
 
 The value of the slope is ~1.1M, which means that on average, for each unit of increase in points per game, the predicted salary paid to a player increases by $1.1M.... Free throws FTW.
 
-###### More info on Heteroskedasticity: https://www.investopedia.com/terms/h/heteroskedasticity.asp#:~:text=With%20heteroskedasticity%2C%20the%20tell%2Dtale,depicted%20in%20the%20image%20below.&text=Unconditional%20heteroskedasticity%20refers%20to%20general,related%20to%20prior%20period%20volatility. 
+###### More info on Heteroskedasticity
+WordLink.apply(Heteroskedasticity,'https://www.investopedia.com/terms/h/heteroskedasticity.asp#:~:text=With%20heteroskedasticity%2C%20the%20tell%2Dtale,depicted%20in%20the%20image%20below.&text=Unconditional%20heteroskedasticity%20refers%20to%20general,related%20to%20prior%20period%20volatility');
 
 High ROI Players
 
