@@ -8,6 +8,7 @@ _September 2023_
 - [Analysis & Correlations](#analysis)
 - [OLS & Approximate Value (AV)](#ols_av)
 - [Correlations](#correlations)
+- [K-Means & PCA](#pca)
 
 ## [Introduction](#introduction)
 In this project I utilize python to analyze data of NBA players in the league and compare their performance against their monetary value (salary) i.e. Which players are undervalued / overvalued. We take a look at some interesting statistics, correlations and then utilize scikit-learn to see if we can accurately predict players next year salaries based on their previous year's performance. (Note: Most contracts and salaries are negotiated with 2-5 years attached so we are looking to see if that future value holds)
@@ -375,14 +376,108 @@ plt.show()
 ```
 ![corr](https://github.com/atnikola/nba-player-performance/assets/38530617/42c12620-39db-4ed0-88cc-f297235c8803)
 
+## [K-Means & PCA](#pca)
+Group NBA players in n clusters to show which players are most similar - number to start with is 5, although there's only 6 positions so could end up grouping by position? - Revise.
+
+The K-Means algorithm works as follows:
+1. First: initialize k points, called means, randomly.
+2. Second: categorize each item to its closest mean and we update the mean’s coordinates, which are the averages of the items categorized in that mean so far.
+3. Third: repeat the process for a given number of iterations and at the end, we have our clusters.
+
+Process:
+1. Create the model and store it in a variable called kmeans_model. 
+2. Clean the data, so I will get only the numeric data and drop any columns with missing data and store it in a variable called clean_numeric_columns.
+3. Train the model on the new data ‘clean_numeric_columns’. 
+4. Once it is done training, I need to get the labels from the model and store it in a variable called 'labels' and print the labels for each row of data / player to the screen. 
+5. The labels will be classifiers from 0 to 4, since I want 5 clusters.
+
+```python
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+```
+```python
+pca = PCA(2)
+clean_numeric_columns = all_player_data._get_numeric_data().dropna(axis=1)
+
+kmeans_model = KMeans(n_clusters=5)
+plot_columns = pca.fit_transform(clean_numeric_columns)
+kmeans_model.fit(clean_numeric_columns)
+labels = kmeans_model.labels_
+```
+```python
+#import matplotlib.pyplot as plt
+
+#all rows from 0 for x, y all rows
+plt.scatter(x=plot_columns[:,0], y=plot_columns[:,1], c=labels)
+plt.grid()
+plt.show()
+```
+![kmeans](https://github.com/atnikola/nba-player-performance/assets/38530617/afbdbaef-9b1e-44c3-98b7-daf6df875c52)
+
+```python
+all_player_data["BPG"] = all_player_data["BLK"]/all_player_data["G"]
+all_player_data["APG"] = all_player_data["AST"]/all_player_data["G"]
+all_player_data["SPG"] = all_player_data["STL"]/all_player_data["G"]
+all_player_data["TPG"] = all_player_data["TOV"]/all_player_data["G"]
+all_player_data["RPG"] = all_player_data["TRB"]/all_player_data["G"]
+all_player_data["FPG"] = all_player_data["PF"]/all_player_data["G"]
+```
+
+PCA
+
+```python
+pca = PCA()
+pca.fit(all_player_data.iloc[:, 21:28])
+feature = pca.transform(all_player_data.iloc[:, 21:28])
+plt.figure(figsize=(8,8))
+plt.scatter(feature[:, 0], feature[:, 1], alpha=0.7, color='#0099FA')
+plt.xlabel('PC1')
+plt.ylabel('PC2')
+plt.grid()
+#plt.show()
+```
+![pca](https://github.com/atnikola/nba-player-performance/assets/38530617/3fbb5f78-f6bc-45e4-bcc4-cc15cd3d689d)
 
 
+```python
+import matplotlib.ticker as ticker
+
+plt.gca().get_xaxis().set_major_locator(ticker.MaxNLocator(integer=True))
+plt.plot([0] + list( np.cumsum(pca.explained_variance_ratio_)), "-o")
+plt.xlabel("# of Principal Components")
+plt.ylabel("Cumulative contribution ratio")
+plt.grid()
+plt.show()
+```
+![pca2](https://github.com/atnikola/nba-player-performance/assets/38530617/9a26da01-fa40-40b8-abd6-9717f2d93ae7)
+
+```python
+plt.figure(figsize=(8,8))
+for x, y, name in zip(pca.components_[0], pca.components_[1], all_player_data.columns[21:28]):
+    plt.text(x, y, name)
+plt.scatter(pca.components_[0], pca.components_[1], color='#0099FA')
+plt.grid()
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.show()
+```
+![pca3](https://github.com/atnikola/nba-player-performance/assets/38530617/ad09f0a1-0988-441d-8c15-70d629dcc76a)
+
+```python
+from sklearn.decomposition import FactorAnalysis
+fa = FactorAnalysis(n_components=2, max_iter=500)
+factors = fa.fit_transform(all_player_data.iloc[:, 21:28])
 
 
-
-
-
-
+plt.figure(figsize=(12, 12))
+for binary in [True, False]:
+    plt.scatter(factors[all_player_data['2023-24'] == binary, 0], factors[all_player_data['2023-24'] == binary, 1], alpha=0.8, label=binary)
+plt.xlabel("Factor 1")
+plt.ylabel("Factor 2")
+plt.legend(loc = 'best')
+plt.grid()
+plt.show()
+```
 
 
 
