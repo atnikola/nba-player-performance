@@ -7,6 +7,7 @@ _September 2023_
 - [Import & Clean Data](#import)
 - [Analysis & Correlations](#analysis)
 - [OLS & Approximate Value (AV)](#ols_av)
+- [Correlations](#correlations)
 
 ## [Introduction](#introduction)
 In this project I utilize python to analyze data of NBA players in the league and compare their performance against their monetary value (salary) i.e. Which players are undervalued / overvalued. We take a look at some interesting statistics, correlations and then utilize scikit-learn to see if we can accurately predict players next year salaries based on their previous year's performance. (Note: Most contracts and salaries are negotiated with 2-5 years attached so we are looking to see if that future value holds)
@@ -366,8 +367,13 @@ overrated[['Age','Position','AV','$/mp']].sort_values('AV', ascending=True).head
 <img width="373" alt="overrated" src="https://github.com/atnikola/nba-player-performance/assets/38530617/c0b7384e-75f4-442e-a5b0-99ee2a38756e">
 
 
+## [Correlations](#correlations)
 
-
+```python
+sns.pairplot(all_player_data[["PTS", "3P", "AST","FG","FT", "TRB","STL", "BLK", "TOV"]], kind="reg", aspect=.8)
+plt.show()
+```
+![corr](https://github.com/atnikola/nba-player-performance/assets/38530617/42c12620-39db-4ed0-88cc-f297235c8803)
 
 
 
